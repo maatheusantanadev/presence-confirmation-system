@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, constr
 
 #Students
 class StudentCreate(BaseModel):
