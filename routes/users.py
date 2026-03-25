@@ -4,10 +4,29 @@ from sqlalchemy.orm import Session
 from database import get_db
 from models import User
 from schemas import UserCreate
-from util import hash_password, verify_password
+from utils import hash_password, verify_password
 from auth import create_token, get_admin_user
+import re
 
 router = APIRouter()
+
+# Funções auxiliares de validação
+def validate_username(username: str):
+    if len(username) < 3:
+        raise HTTPException(status_code=422, detail="Username muito curto")
+    if len(username) > 20:
+        raise HTTPException(status_code=422, detail="Username muito longo")
+
+def validate_password(password: str):
+    if len(password) < 6:
+        raise HTTPException(status_code=422, detail="Senha muito curta")
+    if not re.search(r"\d", password):
+        raise HTTPException(status_code=422, detail="Senha deve conter ao menos um número")
+
+def validate_role(role: str):
+    if not role or role.strip() == "":
+        raise HTTPException(status_code=422, detail="Role não pode estar vazio")
+
 
 # REGISTRAR USUÁRIO
 @router.post("/register")
@@ -15,6 +34,11 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
 
     # Normaliza username (evita duplicidade tipo "Pedro" e "pedro")
     username = user.username.lower()
+
+    # Valida inputs
+    validate_username(username)
+    validate_password(user.password)
+    validate_role(user.role)
 
     # Verifica se o username já existe
     existing = db.query(User).filter(User.username == username).first()
@@ -37,6 +61,7 @@ def register(user: UserCreate, db: Session = Depends(get_db)):
     db.refresh(db_user)
 
     return {"msg": "User criado"}
+
 
 # LOGIN
 @router.post("/login")
@@ -67,11 +92,12 @@ def login(
         "token_type": "bearer"
     }
 
+
 # LOGOUT
 @router.post("/logout")
 def logout():
-    # Logout é controlado pelo cliente (frontend)
     return {"msg": "Logout feito (cliente deve apagar token)"}
+
 
 # DELETAR USUÁRIO
 @router.delete("/{user_id}")
@@ -84,15 +110,12 @@ def delete_user(
     # Busca usuário
     db_user = db.query(User).filter_by(id=user_id).first()
 
-    # Verifica se existe
     if not db_user:
         raise HTTPException(status_code=404, detail="User not found")
 
-    # Evita que o admin delete a si mesmo
     if admin["sub"] == db_user.username:
         raise HTTPException(status_code=400, detail="Não pode deletar a si mesmo")
 
-    # Remove do banco
     db.delete(db_user)
     db.commit()
 
