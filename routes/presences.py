@@ -1,24 +1,32 @@
+from fastapi import APIRouter, Depends, UploadFile, File
+from sqlalchemy.orm import Session
+from database import get_db
+from models import Presence
+from datetime import datetime
 import requests
 
-@router.post("/attendance")
-def mark_attendance(image: UploadFile, db: Session):
+router = APIRouter()
 
-    # envia imagem para API externa
+@router.post("/presence")
+def mark_attendance(
+    image: UploadFile = File(...),
+    db: Session = Depends(get_db)
+):
     response = requests.post(
-        "http://sua-api-facial/recognize",
+        "http://https://ywwwcnolqehepqukbrdp.supabase.co/cadastrar",
         files={"file": image.file}
     )
 
     result = response.json()
 
-    if not result["recognized"]:
+    if not result.get("recognized"):
         return {"msg": "Aluno não reconhecido"}
 
-    student_id = result["student_id"]
+    student_id = result.get("student_id")
 
-    attendance = Attendance(
+    attendance = Presence(
         student_id=student_id,
-        date=datetime.now(),
+        date=datetime.utcnow(),
         status="presente"
     )
 
