@@ -13,16 +13,16 @@ def mark_attendance(
     db: Session = Depends(get_db)
 ):
     response = requests.post(
-        "http://https://ywwwcnolqehepqukbrdp.supabase.co/cadastrar",
+        "https://unpoetically-stampedable-lorena.ngrok-free.dev/reconhecer",
         files={"file": image.file}
     )
 
     result = response.json()
 
-    if not result.get("recognized"):
+    if not result.get("success"):
         return {"msg": "Aluno não reconhecido"}
 
-    student_id = result.get("student_id")
+    student_id = result["usuario"]["id"]
 
     attendance = Presence(
         student_id=student_id,
