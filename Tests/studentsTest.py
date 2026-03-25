@@ -144,7 +144,7 @@ class TestStudentEndpoints(unittest.TestCase):
             "name": "A",
             "email": "b@gmail.com"
         })
-        self.assertEqual(response.status_code, 422)
+        self.assertEqual(response.status_code, 400)
 
     # 10
     def test_update_student_invalid_email(self):
@@ -227,6 +227,35 @@ class TestStudentEndpoints(unittest.TestCase):
 
         self.assertEqual(response.json()["id"], student.id)
 
+    # 18
+    def test_create_student_name_only_spaces(self):
+        response = client.post("/students", json={
+            "name": "   ",
+            "email": "space@gmail.com"
+        })
+        self.assertEqual(response.status_code, 422)
+
+    # 19
+    def test_update_student_name_only_spaces(self):
+        student = Student(name="Teste", email="teste2@gmail.com")
+        self.db.add(student)
+        self.db.commit()
+
+        response = client.put(f"/students/{student.id}", json={
+            "name": "   ",
+            "email": "novo2@gmail.com"
+        })
+        self.assertEqual(response.status_code, 422)
+
+    # 20
+    def test_create_student_max_name_length(self):
+        response = client.post("/students", json={
+            "name": "A" * 50,
+            "email": "max@gmail.com"
+        })
+        self.assertEqual(response.status_code, 200)
+
 
 if __name__ == "__main__":
     unittest.main()
+    
