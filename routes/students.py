@@ -6,7 +6,6 @@ from schemas import StudentCreate
 
 router = APIRouter()
 
-
 @router.get("/students")
 def list_students(db: Session = Depends(get_db)):
     return db.query(Student).all()
@@ -18,7 +17,24 @@ def create_student(student: StudentCreate, db: Session = Depends(get_db)):
     db.commit()
     return db_student
 
-#Putin
+@router.put("/students/{student_id}")
+def update_student(
+    student_id: int,
+    data: StudentCreate,
+    db: Session = Depends(get_db)
+):
+    student = db.query(Student).filter(Student.id == student_id).first()
+
+    if not student:
+        return {"error": "Aluno não encontrado"}
+
+    student.name = data.name
+    student.email = data.email
+
+    db.commit()
+    db.refresh(student)
+
+    return student
 
 @router.delete("/students/{student_id}")
 def delete_student(student_id: int, db: Session = Depends(get_db)):
