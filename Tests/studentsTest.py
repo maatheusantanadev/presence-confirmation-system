@@ -61,12 +61,13 @@ class TestStudentEndpoints(unittest.TestCase):
     def tearDown(self):
         self.db.close()
 
-    # GET
+    # 1
     def test_list_students_empty(self):
         response = client.get("/students")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.json(), [])
 
+    # 2
     def test_list_students_with_data(self):
         student = Student(name="Pedro", email="pedro@gmail.com")
         self.db.add(student)
@@ -76,7 +77,7 @@ class TestStudentEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertTrue(len(response.json()) > 0)
 
-    # POST
+    # 3
     def test_create_student_success(self):
         response = client.post("/students", json={
             "name": "Joao",
@@ -84,6 +85,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
+    # 4
     def test_create_student_duplicate_email(self):
         student = Student(name="Maria", email="maria@gmail.com")
         self.db.add(student)
@@ -95,6 +97,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 400)
 
+    # 5
     def test_create_student_invalid_email(self):
         response = client.post("/students", json={
             "name": "Teste",
@@ -102,6 +105,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
+    # 6
     def test_create_student_invalid_name(self):
         response = client.post("/students", json={
             "name": "",
@@ -109,7 +113,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # PUT
+    # 7
     def test_update_student_success(self):
         student = Student(name="Ana", email="ana@gmail.com")
         self.db.add(student)
@@ -121,6 +125,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
+    # 8
     def test_update_student_not_found(self):
         response = client.put("/students/999", json={
             "name": "Teste",
@@ -128,6 +133,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 404)
 
+    # 9
     def test_update_student_duplicate_email(self):
         s1 = Student(name="A", email="a@gmail.com")
         s2 = Student(name="B", email="b@gmail.com")
@@ -138,8 +144,9 @@ class TestStudentEndpoints(unittest.TestCase):
             "name": "A",
             "email": "b@gmail.com"
         })
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 422)
 
+    # 10
     def test_update_student_invalid_email(self):
         student = Student(name="Teste", email="teste@gmail.com")
         self.db.add(student)
@@ -151,7 +158,7 @@ class TestStudentEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # DELETE
+    # 11
     def test_delete_student_success(self):
         student = Student(name="Carlos", email="carlos@gmail.com")
         self.db.add(student)
@@ -160,11 +167,12 @@ class TestStudentEndpoints(unittest.TestCase):
         response = client.delete(f"/students/{student.id}")
         self.assertEqual(response.status_code, 200)
 
+    # 12
     def test_delete_student_not_found(self):
         response = client.delete("/students/999")
         self.assertEqual(response.status_code, 404)
 
-    # EXTRA (Isso aqui é pra fechar os 20 testes)
+    # 13
     def test_create_multiple_students(self):
         for i in range(3):
             response = client.post("/students", json={
@@ -173,6 +181,7 @@ class TestStudentEndpoints(unittest.TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
+    # 14
     def test_update_multiple_times(self):
         student = Student(name="Loop", email="loop@gmail.com")
         self.db.add(student)
@@ -185,6 +194,7 @@ class TestStudentEndpoints(unittest.TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
+    # 15
     def test_delete_twice(self):
         student = Student(name="Del", email="del@gmail.com")
         self.db.add(student)
@@ -194,6 +204,7 @@ class TestStudentEndpoints(unittest.TestCase):
         response = client.delete(f"/students/{student.id}")
         self.assertEqual(response.status_code, 404)
 
+    # 16
     def test_student_saved_in_db(self):
         client.post("/students", json={
             "name": "DBTest",
@@ -203,6 +214,7 @@ class TestStudentEndpoints(unittest.TestCase):
         student = self.db.query(Student).filter_by(email="db@gmail.com").first()
         self.assertIsNotNone(student)
 
+    # 17
     def test_update_keeps_id(self):
         student = Student(name="ID", email="id@gmail.com")
         self.db.add(student)

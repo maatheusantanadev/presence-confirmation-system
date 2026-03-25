@@ -7,10 +7,11 @@ import requests
 
 router = APIRouter()
 
+
 @router.post("/presence")
 def mark_attendance(
-    image: UploadFile = File(...),
-    db: Session = Depends(get_db)
+        image: UploadFile = File(...),
+        db: Session = Depends(get_db)
 ):
     response = requests.post(
         "https://unpoetically-stampedable-lorena.ngrok-free.dev/reconhecer",

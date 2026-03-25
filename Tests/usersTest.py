@@ -45,7 +45,7 @@ def override_get_db():
 
 app.dependency_overrides[get_db] = override_get_db
 
-# Criar todas as tabelas **antes de usar o TestClient**
+# Criar todas as tabelas
 Base.metadata.create_all(bind=engine)
 
 client = TestClient(app)
@@ -70,7 +70,7 @@ class TestUserEndpoints(unittest.TestCase):
     def tearDown(self):
         self.db.close()
 
-    # 1. Criar usuário válido
+    # 1
     def test_create_user_success(self):
         response = client.post("/register", json={
             "username": "testuser",
@@ -80,7 +80,7 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("msg", response.json())
 
-    # 2. Criar usuário com username curto
+    # 2
     def test_create_user_short_username(self):
         response = client.post("/register", json={
             "username": "ab",
@@ -89,7 +89,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # 3. Criar usuário com senha curta
+    # 3
     def test_create_user_short_password(self):
         response = client.post("/register", json={
             "username": "testuser2",
@@ -98,7 +98,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # 4. Criar usuário sem número na senha
+    # 4
     def test_create_user_password_no_number(self):
         response = client.post("/register", json={
             "username": "testuser3",
@@ -107,7 +107,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # 5. Login correto
+    # 5
     def test_login_success(self):
         user = User(username="loginuser", password=hash_password("abc12345"), role="admin")
         self.db.add(user)
@@ -117,12 +117,12 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("access_token", response.json())
 
-    # 6. Login usuário inválido
+    # 6
     def test_login_invalid_user(self):
         response = client.post("/login", data={"username": "nouser", "password": "abc12345"})
         self.assertEqual(response.status_code, 401)
 
-    # 7. Login senha inválida
+    # 7
     def test_login_invalid_password(self):
         user = User(username="userpass", password=hash_password("abc12345"), role="admin")
         self.db.add(user)
@@ -131,13 +131,13 @@ class TestUserEndpoints(unittest.TestCase):
         response = client.post("/login", data={"username": "userpass", "password": "wrongpass"})
         self.assertEqual(response.status_code, 401)
 
-    # 8. Logout
+    # 8
     def test_logout(self):
         response = client.post("/logout")
         self.assertEqual(response.status_code, 200)
         self.assertIn("msg", response.json())
 
-    # 9. Deletar usuário existente
+    # 9
     def test_delete_user_success(self):
         user = User(username="todelete", password=hash_password("abc12345"), role="admin")
         self.db.add(user)
@@ -148,12 +148,12 @@ class TestUserEndpoints(unittest.TestCase):
         self.assertEqual(response.status_code, 200)
         self.assertIn("msg", response.json())
 
-    # 10. Deletar usuário inexistente
+    # 10
     def test_delete_user_not_found(self):
         response = client.delete("/999")
         self.assertEqual(response.status_code, 404)
 
-    # 11. Criar múltiplos usuários
+    # 11
     def test_create_multiple_users(self):
         for i in range(5):
             response = client.post("/register", json={
@@ -163,7 +163,7 @@ class TestUserEndpoints(unittest.TestCase):
             })
             self.assertEqual(response.status_code, 200)
 
-    # 12. Username duplicado
+    # 12
     def test_create_duplicate_username(self):
         client.post("/register", json={
             "username": "dupuser",
@@ -177,7 +177,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 400)
 
-    # 13. Senha válida com número no final
+    # 13
     def test_password_number_end(self):
         response = client.post("/register", json={
             "username": "numend",
@@ -186,7 +186,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
-    # 14. Criar usuário com papel vazio
+    # 14
     def test_empty_role(self):
         response = client.post("/register", json={
             "username": "norole",
@@ -195,7 +195,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # 15. Login com username em maiúsculo
+    # 15
     def test_login_uppercase_username(self):
         user = User(username="CaseUser".lower(), password=hash_password("pass1234"), role="admin")
         self.db.add(user)
@@ -203,7 +203,7 @@ class TestUserEndpoints(unittest.TestCase):
         response = client.post("/login", data={"username": "CaseUser", "password": "pass1234"})
         self.assertEqual(response.status_code, 200)
 
-    # 16. Deletar usuário duas vezes
+    # 16
     def test_delete_user_twice(self):
         user = User(username="doubledelete", password=hash_password("abc12345"), role="admin")
         self.db.add(user)
@@ -213,7 +213,7 @@ class TestUserEndpoints(unittest.TestCase):
         response = client.delete(f"/{user_id}")
         self.assertEqual(response.status_code, 404)
 
-    # 17. Criar usuário com username máximo permitido
+    # 17
     def test_username_max_length(self):
         response = client.post("/register", json={
             "username": "u" * 20,
@@ -222,7 +222,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
-    # 18. Criar usuário com username acima do máximo
+    # 18
     def test_username_too_long(self):
         response = client.post("/register", json={
             "username": "u" * 21,
@@ -231,7 +231,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 422)
 
-    # 19. Senha com múltiplos números
+    # 19
     def test_password_multiple_numbers(self):
         response = client.post("/register", json={
             "username": "multinums",
@@ -240,7 +240,7 @@ class TestUserEndpoints(unittest.TestCase):
         })
         self.assertEqual(response.status_code, 200)
 
-    # 20. Login após deletar usuário
+    # 20
     def test_login_deleted_user(self):
         user = User(username="tobedeleted", password=hash_password("abc12345"), role="admin")
         self.db.add(user)
