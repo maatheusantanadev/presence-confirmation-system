@@ -144,7 +144,7 @@ class TestStudentEndpoints(unittest.TestCase):
             "name": "A",
             "email": "b@gmail.com"
         })
-        self.assertEqual(response.status_code, 400)
+        self.assertEqual(response.status_code, 422)
 
     # 10
     def test_update_student_invalid_email(self):
