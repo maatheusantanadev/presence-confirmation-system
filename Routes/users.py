@@ -1,51 +1,26 @@
 from fastapi import APIRouter, Depends, HTTPException
 from fastapi.security import OAuth2PasswordRequestForm
 from sqlalchemy.orm import Session
-from database import get_db
-from models import User
-from schemas import UserCreate
-from utils import hash_password, verify_password
+from Database.database import get_db
+from Models.user import User
+from Schemas.user import UserCreate
+from Utils.utils import hash_password, verify_password
 from auth import create_token, get_admin_user
 import re
 
 router = APIRouter()
 
-
-def validate_username(username: str):
-    if len(username) < 3:
-        raise HTTPException(status_code=422, detail="Username muito curto")
-    if len(username) > 20:
-        raise HTTPException(status_code=422, detail="Username muito longo")
-
-
-def validate_password(password: str):
-    if len(password) < 6:
-        raise HTTPException(status_code=422, detail="Senha muito curta")
-    if not re.search(r"\d", password):
-        raise HTTPException(status_code=422, detail="Senha deve conter ao menos um número")
-
-
-def validate_role(role: str):
-    if not role or role.strip() == "":
-        raise HTTPException(status_code=422, detail="Role não pode estar vazio")
-
-
 @router.post("/register")
 def register(user: UserCreate, db: Session = Depends(get_db)):
-    username = user.username.lower()
 
-    validate_username(username)
-    validate_password(user.password)
-    validate_role(user.role)
-
-    existing = db.query(User).filter(User.username == username).first()
+    existing = db.query(User).filter(User.username == user.username).first()
     if existing:
         raise HTTPException(status_code=400, detail="Username já existe")
 
     hashed_password = hash_password(user.password)
 
     db_user = User(
-        username=username,
+        username=user.username,
         password=hashed_password,
         role=user.role
     )

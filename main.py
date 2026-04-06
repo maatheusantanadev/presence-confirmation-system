@@ -1,6 +1,6 @@
 from fastapi import FastAPI
-from database import engine, Base
-from routes import students, users, presences
+from Database.database import engine, Base
+from Routes import students, users, presences
 
 Base.metadata.create_all(bind=engine)
 
