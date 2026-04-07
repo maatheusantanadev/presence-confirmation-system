@@ -6,7 +6,9 @@ source venv/bin/activate
     
 pip install -r requirements.txt
 pip freeze > requirements.txt  
+pip install 'pydantic[email]'
 uvicorn main:app --reload
+    
 
 python -m unittest <caminho do arquivo>
     
