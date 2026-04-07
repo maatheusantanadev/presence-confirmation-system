@@ -1,4 +1,5 @@
 git clone https://github.com/maatheusantanadev/presence-confirmation-system.git
+
 cd presence-confirmation-system
 
 python -m venv venv
