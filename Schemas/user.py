@@ -30,3 +30,4 @@ class UserCreate(BaseModel):
             raise ValueError("Role não pode estar vazio")
 
         return v
+    
