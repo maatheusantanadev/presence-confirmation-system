@@ -10,4 +10,3 @@ class StudentCreate(BaseModel):
         if not v.strip():
             raise ValueError("Nome não pode ser vazio")
         return v
-
