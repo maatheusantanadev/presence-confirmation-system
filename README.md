@@ -5,6 +5,7 @@ python -m venv venv
 source venv/bin/activate
     
 pip install -r requirements.txt
+pip freeze > requirements.txt  
 uvicorn main:app --reload
 
 python -m unittest <caminho do arquivo>

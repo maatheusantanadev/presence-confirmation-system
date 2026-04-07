@@ -9,9 +9,9 @@ from sqlalchemy.orm import sessionmaker
 sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
 from main import app
-from database import Base, get_db
-from models import User
-from utils import hash_password
+from Database.database import Base, get_db
+from Models import user
+from Utils.utils import hash_password
 from auth import create_token, get_admin_user
 
 # Criar engine em memória
@@ -64,7 +64,7 @@ class TestUserEndpoints(unittest.TestCase):
     def setUp(self):
         self.db = TestingSessionLocal()
         # Limpar DB antes de cada teste
-        self.db.query(User).delete()
+        self.db.query(user).delete()
         self.db.commit()
 
     def tearDown(self):
