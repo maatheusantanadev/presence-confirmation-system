@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, UploadFile, File
 from sqlalchemy.orm import Session
 from Database.database import get_db
-from Models import presence
+from Models.presence import Presence
 from datetime import datetime
 import requests
 
