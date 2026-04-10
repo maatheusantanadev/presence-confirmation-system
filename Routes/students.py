@@ -1,8 +1,8 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from Database.database import get_db
-from Models.students import Student
 from Schemas.students import StudentCreate
+from Services.student_service import create_student
 from auth import get_admin_user
 
 router = APIRouter()
@@ -14,19 +14,13 @@ def list_students(db: Session = Depends(get_db)):
 
 
 @router.post("/students")
-def create_student(
+def create(
         student: StudentCreate,
         db: Session = Depends(get_db),
         admin: dict = Depends(get_admin_user)
 ):
-    existing = db.query(Student).filter(Student.email == student.email).first()
-    if existing:
-        raise HTTPException(status_code=400, detail="Email já cadastrado")
+    try:
+        return create_student(student.name, student.email, db)
 
-    db_student = Student(**student.model_dump())
-
-    db.add(db_student)
-    db.commit()
-    db.refresh(db_student)
-
-    return db_student
+    except ValueError as e:
+        raise HTTPException(status_code=400, detail=str(e))

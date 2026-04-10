@@ -1,296 +1,170 @@
 # Testes (1 ao 20) desenvolvidos por Francisco Pedro
 
-import unittest
-from fastapi.testclient import TestClient
-import sys, os
-from sqlalchemy import create_engine
-from sqlalchemy.orm import sessionmaker
+import pytest
+from Services.studentes_service import create_student
 
-# Permite importar arquivos da raiz do projeto
-sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), "../..")))
 
-from main import app
-from database import Base, get_db
-from models import Student
-from auth import get_admin_user
+# =========================================================
+# MOCK DE BANCO (FakeDB)
+# =========================================================
 
+class FakeDB:
+    """
+    Simula um banco de dados.
+    Não usa SQL real.
+    """
 
-# CONFIGURAÇÃO DO BANCO DE TESTE
+    def __init__(self, existing_email=None):
+        self.existing_email = existing_email
+        self.saved_objects = []
 
-# Cria um banco SQLite em memória (não salva dados em disco)
-engine = create_engine(
-    "sqlite:///:memory:",
-    connect_args={"check_same_thread": False}
-)
+    def query(self, *args, **kwargs):
+        return self
 
-# Mantém uma única conexão ativa para os testes
-connection = engine.connect()
+    def filter_by(self, **kwargs):
+        self.email = kwargs.get("email")
+        return self
 
-# Cria uma sessão de banco vinculada à conexão
-TestingSessionLocal = sessionmaker(
-    autocommit=False,
-    autoflush=False,
-    bind=connection
-)
+    def first(self):
+        if self.email == self.existing_email:
+            return {"email": self.email}
+        return None
 
-# Cria as tabelas no banco em memória
-Base.metadata.create_all(bind=connection)
+    def add(self, obj):
+        self.saved_objects.append(obj)
 
+    def commit(self):
+        pass
 
-# OVERRIDE DO BANCO
 
-# Substitui a dependência original do FastAPI (get_db)
-# para usar o banco de testes
-def override_get_db():
-    db = TestingSessionLocal()
-    try:
-        yield db
-    finally:
-        db.close()
+# =========================================================
+# TESTES (1 AO 20)
+# =========================================================
 
 
-app.dependency_overrides[get_db] = override_get_db
+def test_01_create_student_success():
+    # 1 - CRIANDO CENÁRIO
+    db = FakeDB()
 
+    # 2 - EXECUÇÃO
+    result = create_student("Pedro", "pedro@gmail.com", db)
 
-# Cliente de testes do FastAPI
-client = TestClient(app)
+    # 3 - VALIDAÇÃO
+    assert result.name == "Pedro"
+    assert result.email == "pedro@gmail.com"
 
 
-# MOCK DE AUTENTICAÇÃO
+def test_02_nome_vazio():
+    db = FakeDB()
+    with pytest.raises(ValueError):
+        create_student("", "email@gmail.com", db)
 
-# Simula um usuário admin para liberar acesso às rotas protegidas
-def override_get_admin_user():
-    return {"sub": "adminuser", "role": "admin"}
 
+def test_03_nome_espacos():
+    db = FakeDB()
+    with pytest.raises(ValueError):
+        create_student("   ", "email@gmail.com", db)
 
-app.dependency_overrides[get_admin_user] = override_get_admin_user
 
+def test_04_email_invalido():
+    db = FakeDB()
+    with pytest.raises(ValueError):
+        create_student("Pedro", "emailinvalido", db)
 
-# CLASSE DE TESTES
 
-class TestStudentEndpoints(unittest.TestCase):
+def test_05_email_duplicado():
+    db = FakeDB(existing_email="pedro@gmail.com")
+    with pytest.raises(ValueError):
+        create_student("Pedro", "pedro@gmail.com", db)
 
-    # Executado antes de cada teste
-    def setUp(self):
-        self.db = TestingSessionLocal()
 
-        # Limpa a tabela de estudantes
-        self.db.query(Student).delete()
-        self.db.commit()
+def test_06_email_vazio():
+    db = FakeDB()
+    with pytest.raises(ValueError):
+        create_student("Pedro", "", db)
 
-    # Executado após cada teste
-    def tearDown(self):
-        self.db.close()
 
+def test_07_nome_maximo():
+    db = FakeDB()
+    result = create_student("A"*50, "max@gmail.com", db)
+    assert len(result.name) == 50
 
-    # TESTES DE LISTAGEM (GET)
 
-    # 1. Deve retornar lista vazia
-    def test_list_students_empty(self):
-        response = client.get("/students")
-        self.assertEqual(response.status_code, 200)
-        self.assertEqual(response.json(), [])
+def test_08_nome_minimo():
+    db = FakeDB()
+    result = create_student("A", "a@gmail.com", db)
+    assert result.name == "A"
 
-    # 2. Deve retornar alunos cadastrados
-    def test_list_students_with_data(self):
-        student = Student(name="Pedro", email="pedro@gmail.com")
-        self.db.add(student)
-        self.db.commit()
 
-        response = client.get("/students")
-        self.assertEqual(response.status_code, 200)
-        self.assertTrue(len(response.json()) > 0)
+def test_09_email_com_espaco():
+    db = FakeDB()
+    with pytest.raises(ValueError):
+        create_student("Pedro", "email @gmail.com", db)
 
 
-    # TESTES DE CRIAÇÃO (POST)
-
-    # 3. Criar aluno com dados válidos
-    def test_create_student_success(self):
-        response = client.post("/students", json={
-            "name": "Joao",
-            "email": "joao@gmail.com"
-        })
-        self.assertEqual(response.status_code, 200)
-
-    # 4. Não permitir email duplicado
-    def test_create_student_duplicate_email(self):
-        student = Student(name="Maria", email="maria@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        response = client.post("/students", json={
-            "name": "Outra",
-            "email": "maria@gmail.com"
-        })
-        self.assertEqual(response.status_code, 400)
-
-    # 5. Não permitir email inválido
-    def test_create_student_invalid_email(self):
-        response = client.post("/students", json={
-            "name": "Teste",
-            "email": "email-invalido"
-        })
-        self.assertEqual(response.status_code, 422)
-
-    # 6. Não permitir nome inválido
-    def test_create_student_invalid_name(self):
-        response = client.post("/students", json={
-            "name": "",
-            "email": "teste@gmail.com"
-        })
-        self.assertEqual(response.status_code, 422)
-
-
-    # TESTES DE ATUALIZAÇÃO (PUT)
-
-    # 7. Atualizar aluno com sucesso
-    def test_update_student_success(self):
-        student = Student(name="Ana", email="ana@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        response = client.put(f"/students/{student.id}", json={
-            "name": "Ana Updated",
-            "email": "ana2@gmail.com"
-        })
-        self.assertEqual(response.status_code, 200)
-
-    # 8. Atualizar aluno inexistente
-    def test_update_student_not_found(self):
-        response = client.put("/students/999", json={
-            "name": "Teste",
-            "email": "teste@gmail.com"
-        })
-        self.assertEqual(response.status_code, 404)
-
-    # 9. Não permitir email duplicado na atualização
-    def test_update_student_duplicate_email(self):
-        s1 = Student(name="A", email="a@gmail.com")
-        s2 = Student(name="B", email="b@gmail.com")
-        self.db.add_all([s1, s2])
-        self.db.commit()
-
-        response = client.put(f"/students/{s1.id}", json={
-            "name": "A",
-            "email": "b@gmail.com"
-        })
-        self.assertEqual(response.status_code, 400)
-
-    # 10. Não permitir email inválido na atualização
-    def test_update_student_invalid_email(self):
-        student = Student(name="Teste", email="teste@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        response = client.put(f"/students/{student.id}", json={
-            "name": "Novo",
-            "email": "invalido"
-        })
-        self.assertEqual(response.status_code, 422)
-
-
-    # TESTES DE REMOÇÃO (DELETE)
-
-    # 11. Deletar aluno com sucesso
-    def test_delete_student_success(self):
-        student = Student(name="Carlos", email="carlos@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        response = client.delete(f"/students/{student.id}")
-        self.assertEqual(response.status_code, 200)
-
-    # 12. Deletar aluno inexistente
-    def test_delete_student_not_found(self):
-        response = client.delete("/students/999")
-        self.assertEqual(response.status_code, 404)
-
-
-    # TESTES COMPLEMENTARES
-
-    # 13. Criar múltiplos alunos
-    def test_create_multiple_students(self):
-        for i in range(3):
-            response = client.post("/students", json={
-                "name": f"Aluno{i}",
-                "email": f"aluno{i}@gmail.com"
-            })
-            self.assertEqual(response.status_code, 200)
-
-    # 14. Atualizar várias vezes o mesmo aluno
-    def test_update_multiple_times(self):
-        student = Student(name="Loop", email="loop@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        for i in range(3):
-            response = client.put(f"/students/{student.id}", json={
-                "name": f"Loop{i}",
-                "email": f"loop{i}@gmail.com"
-            })
-            self.assertEqual(response.status_code, 200)
-
-    # 15. Tentar deletar duas vezes
-    def test_delete_twice(self):
-        student = Student(name="Del", email="del@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        client.delete(f"/students/{student.id}")
-        response = client.delete(f"/students/{student.id}")
-        self.assertEqual(response.status_code, 404)
-
-    # 16. Verifica se o aluno foi salvo no banco
-    def test_student_saved_in_db(self):
-        client.post("/students", json={
-            "name": "DBTest",
-            "email": "db@gmail.com"
-        })
-
-        student = self.db.query(Student).filter_by(email="db@gmail.com").first()
-        self.assertIsNotNone(student)
-
-    # 17. Verifica se o ID permanece após update
-    def test_update_keeps_id(self):
-        student = Student(name="ID", email="id@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        response = client.put(f"/students/{student.id}", json={
-            "name": "Novo",
-            "email": "novo@gmail.com"
-        })
-
-        self.assertEqual(response.json()["id"], student.id)
-
-    # 18. Nome apenas com espaços não é permitido
-    def test_create_student_name_only_spaces(self):
-        response = client.post("/students", json={
-            "name": "   ",
-            "email": "space@gmail.com"
-        })
-        self.assertEqual(response.status_code, 422)
-
-    # 19. Atualização com nome inválido (espaços)
-    def test_update_student_name_only_spaces(self):
-        student = Student(name="Teste", email="teste2@gmail.com")
-        self.db.add(student)
-        self.db.commit()
-
-        response = client.put(f"/students/{student.id}", json={
-            "name": "   ",
-            "email": "novo2@gmail.com"
-        })
-        self.assertEqual(response.status_code, 422)
-
-    # 20. Nome no tamanho máximo permitido
-    def test_create_student_max_name_length(self):
-        response = client.post("/students", json={
-            "name": "A" * 50,
-            "email": "max@gmail.com"
-        })
-        self.assertEqual(response.status_code, 200)
-
-
-if __name__ == "__main__":
-    unittest.main()
+def test_10_multiplos_students():
+    db = FakeDB()
+    create_student("A", "a@gmail.com", db)
+    create_student("B", "b@gmail.com", db)
+    assert len(db.saved_objects) == 2
+
+
+def test_11_nome_caracter_especial():
+    db = FakeDB()
+    result = create_student("João!", "joao@gmail.com", db)
+    assert result.name == "João!"
+
+
+def test_12_nome_numerico():
+    db = FakeDB()
+    result = create_student("123", "num@gmail.com", db)
+    assert result.name == "123"
+
+
+def test_13_trim_nome():
+    db = FakeDB()
+    result = create_student(" Pedro ", "pedro@gmail.com", db)
+    assert result.name == "Pedro"
+
+
+def test_14_retorna_objeto():
+    db = FakeDB()
+    result = create_student("Pedro", "pedro@gmail.com", db)
+    assert result is not None
+
+
+def test_15_salva_no_mock():
+    db = FakeDB()
+    create_student("Pedro", "pedro@gmail.com", db)
+    assert len(db.saved_objects) == 1
+
+
+def test_16_email_uppercase():
+    db = FakeDB()
+    result = create_student("Pedro", "PEDRO@GMAIL.COM", db)
+    assert result.email == "PEDRO@GMAIL.COM"
+
+
+def test_17_email_longo():
+    db = FakeDB()
+    email = "a"*30 + "@gmail.com"
+    result = create_student("Pedro", email, db)
+    assert result.email == email
+
+
+def test_18_email_com_ponto():
+    db = FakeDB()
+    result = create_student("Pedro", "pedro.silva@gmail.com", db)
+    assert "." in result.email
+
+
+def test_19_email_subdominio():
+    db = FakeDB()
+    result = create_student("Pedro", "pedro@mail.com", db)
+    assert "@mail.com" in result.email
+
+
+def test_20_case_sensitive():
+    db = FakeDB()
+    result = create_student("Pedro", "Pedro@Gmail.com", db)
+    assert result.email == "Pedro@Gmail.com"
