@@ -1,0 +1,120 @@
+/* Reset */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+/* Body */
+body {
+  min-height: 100vh;
+  background-color: #0f0f13;
+  color: #e2e2e2;
+  font-family: 'Segoe UI', system-ui, sans-serif;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1rem;
+}
+
+/* Container */
+.container {
+  width: 100%;
+  max-width: 420px;
+}
+
+/* Card */
+.card {
+  background-color: #1a1a24;
+  border: 1px solid #2e2e42;
+  border-radius: 16px;
+  padding: 2.5rem 2rem;
+  box-shadow: 0 8px 40px rgba(139, 92, 246, 0.15);
+  animation: fadeIn 0.3s ease;
+}
+
+/* Animação */
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(10px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+/* Título */
+.title {
+  text-align: center;
+  margin-bottom: 2rem;
+  color: #fff;
+}
+
+/* Campos */
+.field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-bottom: 1.25rem;
+}
+
+.field label {
+  color: #a0a0b8;
+}
+
+.field input {
+  background-color: #12121a;
+  border: 1px solid #2e2e42;
+  border-radius: 8px;
+  padding: 0.65rem;
+  color: #e2e2e2;
+  outline: none;
+  transition: all 0.2s ease;
+}
+
+.field input::placeholder {
+  color: #6b6b85;
+}
+
+.field input:focus {
+  border-color: #8b5cf6;
+  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+}
+
+/* Botão */
+.btn {
+  width: 100%;
+  padding: 0.75rem;
+  background-color: #8b5cf6;
+  border: none;
+  border-radius: 8px;
+  color: #fff;
+  font-weight: bold;
+  cursor: pointer;
+  transition: 0.2s;
+}
+
+.btn:hover:not(:disabled) {
+  background-color: #7c3aed;
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* Mensagens */
+.message {
+  margin-top: 1rem;
+  text-align: center;
+}
+
+.message.success {
+  color: #4ade80;
+}
+
+.message.error {
+  color: #f87171;
+}

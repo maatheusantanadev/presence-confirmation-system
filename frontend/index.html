@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Login</title>
+
+  <!-- CSS -->
+  <link rel="stylesheet" href="styles.css" />
+</head>
+
+<body>
+  <div class="container">
+    <div class="card">
+      <h1 class="title">Entrar</h1>
+
+      <!-- Formulário -->
+      <form id="loginForm" novalidate aria-describedby="message">
+        
+        <div class="field">
+          <label for="username">Usuário</label>
+          <input
+            type="text"
+            id="username"
+            placeholder="Digite seu usuário"
+            autocomplete="username"
+            autofocus
+            required
+          />
+        </div>
+
+        <div class="field">
+          <label for="password">Senha</label>
+          <input
+            type="password"
+            id="password"
+            placeholder="Digite sua senha"
+            autocomplete="current-password"
+            required
+          />
+        </div>
+
+        <button type="submit" id="submitBtn" class="btn">
+          Entrar
+        </button>
+      </form>
+
+      <!-- Mensagem -->
+      <p id="message" class="message"></p>
+    </div>
+  </div>
+
+  <!-- JS -->
+  <script src="script.js"></script>
+</body>
+</html>
