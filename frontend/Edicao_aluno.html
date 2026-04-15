@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Aluno | Sistema Presença</title>
+    <link rel="stylesheet" href="assets/css/Dashboard.css">
+    <link rel="stylesheet" href="assets/css/Cadastro_aluno.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <main class="container">
+        <div class="form-card animate-in" id="editCard" style="display: none;">
+            <div class="form-header">
+                <div class="icon-circle edit-mode">
+                    <i class="fas fa-user-edit"></i>
+                </div>
+                <h1>Editar Aluno</h1>
+                <p>Atualize as informações do estudante selecionado.</p>
+            </div>
+
+            <form id="editStudentForm" novalidate>
+                <div class="form-group">
+                    <label for="nome">Nome Completo</label>
+                    <input type="text" id="nome" placeholder="Carregando..." required>
+                    <span class="error-message" id="error-nome">O nome deve ter pelo menos 3 caracteres.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="email">E-mail Acadêmico</label>
+                    <input type="email" id="email" placeholder="Carregando..." required>
+                    <span class="error-message" id="error-email">Insira um e-mail válido.</span>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="window.location.href='alunos.html'">
+                        Cancelar
+                    </button>
+                    <button type="submit" class="btn-primary" id="saveBtn">
+                        <i class="fas fa-check"></i> Salvar Alterações
+                    </button>
+                </div>
+            </form>
+            
+            <div id="successFeedback" class="message success" style="display: none; margin-top: 1rem;">
+                <i class="fas fa-check-circle"></i> Alterações salvas com sucesso!
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/Edicao_aluno.js"></script>
+</body>
+</html>
