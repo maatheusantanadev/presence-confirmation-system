@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Alunos | Controle de Presença</title>
+    <link rel="stylesheet" href="assets/css/Dashboard.css">
+    <link rel="stylesheet" href="assets/css/Alunos.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Sistema Presença</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="turmas.html"><i class="fas fa-users-rectangle"></i> Turmas</a>
+            <a href="#" class="active"><i class="fas fa-user-graduate"></i> Alunos</a>
+            <a href="presencas.html"><i class="fas fa-clipboard-check"></i> Presenças</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Alunos</h1>
+                <p>Gerenciamento de estudantes cadastrados</p>
+            </div>
+            <button class="btn-primary" onclick="window.location.href='cadastro_aluno.html'">
+                <i class="fas fa-plus"></i> Novo Aluno
+            </button>
+        </header>
+
+        <section class="content-card">
+            <div class="table-controls">
+                <div class="search-box">
+                    <i class="fas fa-search"></i>
+                    <input type="text" id="searchStudent" placeholder="Buscar aluno por nome ou email...">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Nome</th>
+                            <th>Email</th>
+                            <th class="text-center">Ações</th>
+                        </tr>
+                    </thead>
+                    <tbody id="studentTableBody">
+                        </tbody>
+                </table>
+            </div>
+        </section>
+    </main>
+
+    <script src="assets/js/Alunos.js"></script>
+</body>
+</html>

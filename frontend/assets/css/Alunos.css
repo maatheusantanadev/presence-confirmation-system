@@ -1,0 +1,125 @@
+/* Importamos as cores do Dashboard para manter o padrão */
+:root {
+    --primary-blue: #2563eb;
+    --primary-hover: #1d4ed8;
+    --white: #ffffff;
+    --bg-color: #f0f4f8;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --danger: #ef4444;
+}
+
+.content-card {
+    background: var(--white);
+    border-radius: 12px;
+    box-shadow: 0 4px 6px rgba(37, 99, 235, 0.05);
+    border: 1px solid var(--border);
+    padding: 1.5rem;
+}
+
+/* Header da Tabela */
+.table-controls {
+    margin-bottom: 1.5rem;
+    display: flex;
+    justify-content: flex-start;
+}
+
+.search-box {
+    position: relative;
+    width: 100%;
+    max-width: 400px;
+}
+
+.search-box i {
+    position: absolute;
+    left: 12px;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-box input {
+    width: 100%;
+    padding: 0.75rem 0.75rem 0.75rem 2.5rem;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    outline: none;
+    transition: 0.2s;
+}
+
+.search-box input:focus {
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
+}
+
+/* Tabela Estilizada */
+.table-responsive {
+    overflow-x: auto;
+}
+
+.custom-table {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+}
+
+.custom-table th {
+    background-color: #f8fafc;
+    padding: 1rem;
+    color: var(--text-muted);
+    font-weight: 600;
+    font-size: 0.875rem;
+    border-bottom: 2px solid var(--border);
+}
+
+.custom-table td {
+    padding: 1rem;
+    border-bottom: 1px solid var(--border);
+    color: var(--text-main);
+    font-size: 0.95rem;
+}
+
+/* Zebra e Hover */
+.custom-table tbody tr:nth-child(even) {
+    background-color: #fbfcfe;
+}
+
+.custom-table tbody tr:hover {
+    background-color: #f1f5f9;
+}
+
+/* Botões de Ação */
+.text-center { text-align: center; }
+
+.btn-icon {
+    border: none;
+    background: transparent;
+    cursor: pointer;
+    padding: 8px;
+    border-radius: 6px;
+    transition: 0.2s;
+    margin: 0 2px;
+}
+
+.btn-edit { color: var(--primary-blue); }
+.btn-edit:hover { background-color: #dbeafe; }
+
+.btn-delete { color: var(--danger); }
+.btn-delete:hover { background-color: #fee2e2; }
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: white;
+    border: none;
+    padding: 0.75rem 1.5rem;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.2s;
+}
+
+.btn-primary:hover { background-color: var(--primary-hover); }
