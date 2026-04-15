@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registrar Presença | Sistema Presença</title>
+    <link rel="stylesheet" href="assets/css/Dashboard.css">
+    <link rel="stylesheet" href="assets/css/Registrar_presenca.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <main class="container">
+        <div class="presence-card animate-in">
+            <div class="card-header">
+                <div class="icon-badge">
+                    <i class="fas fa-user-check"></i>
+                </div>
+                <h1>Registrar Presença</h1>
+                <div class="datetime-display" id="currentDateTime">
+                    <span class="date">--/--/----</span>
+                    <span class="time">00:00:00</span>
+                </div>
+            </div>
+
+            <form id="presenceForm" novalidate>
+                <div class="form-group">
+                    <label for="studentSearch">Selecionar Aluno</label>
+                    <div class="autocomplete-wrapper">
+                        <i class="fas fa-search search-icon"></i>
+                        <input 
+                            type="text" 
+                            id="studentSearch" 
+                            placeholder="Digite o nome do aluno..." 
+                            autocomplete="off"
+                        >
+                        <div id="autocompleteList" class="autocomplete-items"></div>
+                    </div>
+                </div>
+
+                <div class="info-alert">
+                    <i class="fas fa-info-circle"></i>
+                    A presença será registrada para a sessão ativa nesta turma.
+                </div>
+
+                <div class="card-actions">
+                    <button type="button" class="btn-back" onclick="window.history.back()">
+                        Voltar
+                    </button>
+                    <button type="submit" class="btn-confirm" id="confirmBtn">
+                        Confirmar Presença
+                    </button>
+                </div>
+            </form>
+
+            <div id="feedbackContainer" class="feedback-overlay" style="display: none;">
+                <div class="feedback-content">
+                    <div class="success-icon">
+                        <i class="fas fa-check"></i>
+                    </div>
+                    <h2>Presença Confirmada!</h2>
+                    <p id="successMessage">O aluno foi registrado com sucesso.</p>
+                    <button class="btn-primary" onclick="resetForm()">Novo Registro</button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/Registrar_presenca.js"></script>
+</body>
+</html>

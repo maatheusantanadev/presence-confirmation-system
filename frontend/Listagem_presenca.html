@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Histórico de Presenças | Sistema Presença</title>
+    <link rel="stylesheet" href="assets/css/Dashboard.css">
+    <link rel="stylesheet" href="assets/css/Listagem_presenca.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Sistema Presença</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="dashboard.html"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="turmas.html"><i class="fas fa-users-rectangle"></i> Turmas</a>
+            <a href="alunos.html"><i class="fas fa-user-graduate"></i> Alunos</a>
+            <a href="#" class="active"><i class="fas fa-clipboard-check"></i> Presenças</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <div class="header-title">
+                <h1>Histórico de Presenças</h1>
+                <p>Consulte e exporte os registros de aula</p>
+            </div>
+            <button class="btn-export" id="exportBtn">
+                <i class="fas fa-file-export"></i> Exportar Relatório
+            </button>
+        </header>
+
+        <section class="filter-card">
+            <div class="filter-grid">
+                <div class="filter-group">
+                    <label>Buscar por Aluno</label>
+                    <div class="input-with-icon">
+                        <i class="fas fa-user"></i>
+                        <input type="text" id="nameFilter" placeholder="Nome ou email...">
+                    </div>
+                </div>
+                <div class="filter-group">
+                    <label>De:</label>
+                    <input type="date" id="dateStart">
+                </div>
+                <div class="filter-group">
+                    <label>Até:</label>
+                    <input type="date" id="dateEnd">
+                </div>
+                <div class="filter-group btn-align">
+                    <button class="btn-filter" id="applyFilters">
+                        <i class="fas fa-filter"></i> Filtrar
+                    </button>
+                </div>
+            </div>
+        </section>
+
+        <section class="content-card">
+            <div class="table-responsive">
+                <table class="custom-table">
+                    <thead>
+                        <tr>
+                            <th>Nome do Aluno</th>
+                            <th>Email</th>
+                            <th>Data</th>
+                            <th>Hora</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="presenceTableBody">
+                        </tbody>
+                </table>
+            </div>
+            <div id="noData" class="no-data" style="display: none;">
+                <i class="fas fa-search"></i>
+                <p>Nenhum registro encontrado para este filtro.</p>
+            </div>
+        </section>
+    </main>
+
+    <script src="assets/js/Presencas.js"></script>
+</body>
+</html>
