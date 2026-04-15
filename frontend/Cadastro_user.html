@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cadastro de Usuário</title>
+    <link rel="stylesheet" href="/frontend/assets/css/Cadastro_user.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="form-card animate-in">
+        <div class="form-header">
+            <div class="icon-circle">
+                <i class="fas fa-user-plus"></i>
+            </div>
+            <h1>Criar Conta</h1>
+            <p>Preencha os dados abaixo para se registrar</p>
+        </div>
+
+        <form id="registerForm">
+            <div id="apiResponse" class="message" style="display: none; margin-bottom: 1rem;"></div>
+
+            <div class="form-group">
+                <label for="username">Username</label>
+                <input type="text" id="username" name="username" placeholder="Mínimo 3 caracteres" required>
+                <span class="error-message">O username deve ter entre 3 e 20 caracteres.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Senha</label>
+                <input type="password" id="password" name="password" placeholder="Mínimo 6 caracteres, 1 número e 1 maiúscula" required>
+                <span class="error-message">A senha deve ter 6+ caracteres, 1 número e 1 letra maiúscula.</span>
+            </div>
+
+            <div class="form-group">
+                <label for="role">Cargo (Role)</label>
+                <input type="text" id="role" name="role" value="admin" placeholder="Ex: admin, user">
+                <span class="error-message">O cargo não pode estar vazio.</span>
+            </div>
+
+            <div class="form-actions">
+                <button type="button" class="btn-secondary" onclick="window.location.reload()">
+                    <i class="fas fa-eraser"></i> Limpar
+                </button>
+                <button type="submit" class="btn-primary">
+                    <i class="fas fa-check"></i> Registrar
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script src="/frontend/assets/js/Cadastro_user.js"></script>
+</body>
+</html>
