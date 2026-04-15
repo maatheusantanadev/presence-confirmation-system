@@ -1,0 +1,79 @@
+x<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard | Controle de Presença</title>
+    <link rel="stylesheet" href="assets/css/Dashboard.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <aside class="sidebar">
+        <div class="sidebar-header">
+            <h2>Sistema Presença</h2>
+        </div>
+        <nav class="sidebar-nav">
+            <a href="#" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
+            <a href="turmas.html"><i class="fas fa-users-rectangle"></i> Turmas</a>
+            <a href="alunos.html"><i class="fas fa-user-graduate"></i> Alunos</a>
+            <a href="presencas.html"><i class="fas fa-clipboard-check"></i> Presenças</a>
+        </nav>
+        <div class="sidebar-footer">
+            <a href="#" id="logoutBtn"><i class="fas fa-sign-out-alt"></i> Sair</a>
+        </div>
+    </aside>
+
+    <main class="main-content">
+        <header class="header">
+            <h1>Dashboard</h1>
+            <div class="user-info">
+                <span id="userName">Professor</span>
+                <div class="avatar">P</div>
+            </div>
+        </header>
+
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-icon blue">
+                    <i class="fas fa-user-graduate"></i>
+                </div>
+                <div class="stat-info">
+                    <p>Total de Alunos</p>
+                    <h2 id="totalAlunos">0</h2>
+                </div>
+            </div>
+
+            <div class="stat-card">
+                <div class="stat-icon green">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <div class="stat-info">
+                    <p>Presenças Registradas</p>
+                    <h2 id="totalPresencas">0</h2>
+                </div>
+            </div>
+        </section>
+
+        <section class="actions-section">
+            <h3>Ações Rápidas</h3>
+            <div class="actions-grid">
+                <button class="action-btn" onclick="location.href='alunos.html'">
+                    <i class="fas fa-user-plus"></i>
+                    Gerenciar Alunos
+                </button>
+                <button class="action-btn secondary" onclick="location.href='registrar_sessao.html'">
+                    <i class="fas fa-qrcode"></i>
+                    Registrar Presença
+                </button>
+                <button class="action-btn outline" onclick="location.href='historico.html'">
+                    <i class="fas fa-eye"></i>
+                    Visualizar Presenças
+                </button>
+            </div>
+        </section>
+    </main>
+
+    <script src="assets/js/Dashboard.js"></script>
+</body>
+</html>

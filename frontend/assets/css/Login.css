@@ -8,8 +8,8 @@
 /* Body */
 body {
   min-height: 100vh;
-  background-color: #0f0f13;
-  color: #e2e2e2;
+  background-color: #f0f4f8; /* Azul bem clarinho de fundo */
+  color: #1e293b; /* Texto cinza azulado escuro */
   font-family: 'Segoe UI', system-ui, sans-serif;
   display: flex;
   align-items: center;
@@ -25,11 +25,11 @@ body {
 
 /* Card */
 .card {
-  background-color: #1a1a24;
-  border: 1px solid #2e2e42;
+  background-color: #ffffff; /* Branco */
+  border: 1px solid #d1d5db;
   border-radius: 16px;
   padding: 2.5rem 2rem;
-  box-shadow: 0 8px 40px rgba(139, 92, 246, 0.15);
+  box-shadow: 0 10px 25px rgba(37, 99, 235, 0.1); /* Sombra leve em azul */
   animation: fadeIn 0.3s ease;
 }
 
@@ -49,7 +49,7 @@ body {
 .title {
   text-align: center;
   margin-bottom: 2rem;
-  color: #fff;
+  color: #1e3a8a; /* Azul marinho */
 }
 
 /* Campos */
@@ -61,33 +61,34 @@ body {
 }
 
 .field label {
-  color: #a0a0b8;
+  color: #475569; /* Cinza suave */
+  font-weight: 500;
 }
 
 .field input {
-  background-color: #12121a;
-  border: 1px solid #2e2e42;
+  background-color: #ffffff;
+  border: 1px solid #cbd5e1;
   border-radius: 8px;
   padding: 0.65rem;
-  color: #e2e2e2;
+  color: #1e293b;
   outline: none;
   transition: all 0.2s ease;
 }
 
 .field input::placeholder {
-  color: #6b6b85;
+  color: #94a3b8;
 }
 
 .field input:focus {
-  border-color: #8b5cf6;
-  box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.2);
+  border-color: #2563eb; /* Azul primário */
+  box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.2);
 }
 
 /* Botão */
 .btn {
   width: 100%;
   padding: 0.75rem;
-  background-color: #8b5cf6;
+  background-color: #2563eb; /* Azul primário */
   border: none;
   border-radius: 8px;
   color: #fff;
@@ -97,7 +98,7 @@ body {
 }
 
 .btn:hover:not(:disabled) {
-  background-color: #7c3aed;
+  background-color: #1d4ed8; /* Azul mais escuro no hover */
 }
 
 .btn:disabled {
@@ -109,12 +110,13 @@ body {
 .message {
   margin-top: 1rem;
   text-align: center;
+  font-size: 0.9rem;
 }
 
 .message.success {
-  color: #4ade80;
+  color: #16a34a; /* Verde sucesso */
 }
 
 .message.error {
-  color: #f87171;
+  color: #dc2626; /* Vermelho erro */
 }
