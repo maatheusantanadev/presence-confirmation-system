@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Minha Área | Sistema Presença</title>
+    <link rel="stylesheet" href="assets/css/Area_aluno.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <div class="app-container">
+        <header class="student-header">
+            <div class="user-profile">
+                <div class="avatar-large">
+                    <i class="fas fa-user"></i>
+                </div>
+                <div class="user-info">
+                    <h1 id="studentName">Matheus Silva</h1>
+                    <p>Matrícula: 202610045</p>
+                </div>
+            </div>
+            <button class="logout-minimal" title="Sair">
+                <i class="fas fa-sign-out-alt"></i>
+            </button>
+        </header>
+
+        <section class="summary-section">
+            <div class="summary-card">
+                <span class="label">Total de Presenças</span>
+                <h2 id="totalPresence">0</h2>
+                <div class="progress-bar">
+                    <div class="progress-fill" style="width: 85%;"></div>
+                </div>
+                <span class="sub-label">85% de frequência</span>
+            </div>
+        </section>
+
+        <section class="history-section">
+            <div class="section-title">
+                <h3>Histórico de Presenças</h3>
+                <span class="badge-count" id="listCount">0 registros</span>
+            </div>
+
+            <div class="presence-list" id="presenceList">
+                </div>
+        </section>
+
+        <button class="fab-register" onclick="window.location.href='confirmar_presenca.html'">
+            <i class="fas fa-qrcode"></i>
+            <span>Confirmar Presença</span>
+        </button>
+    </div>
+
+    <script src="assets/js/Area_aluno.js"></script>
+</body>
+</html>

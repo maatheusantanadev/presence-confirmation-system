@@ -1,0 +1,87 @@
+:root {
+    --primary-blue: #2563eb;
+    --bg-light: #f8fafc;
+    --white: #ffffff;
+    --text-dark: #1e293b;
+    --text-muted: #64748b;
+    --success: #16a34a;
+    --border: #e2e8f0;
+}
+
+* { box-sizing: border-box; margin: 0; padding: 0; font-family: 'Segoe UI', sans-serif; }
+
+body { background-color: var(--bg-light); color: var(--text-dark); }
+
+.app-container { max-width: 600px; margin: 0 auto; padding: 1.5rem; padding-bottom: 6rem; }
+
+/* Header */
+.student-header {
+    display: flex; justify-content: space-between; align-items: center;
+    margin-bottom: 2rem;
+}
+
+.user-profile { display: flex; align-items: center; gap: 1rem; }
+
+.avatar-large {
+    width: 60px; height: 60px; background: var(--primary-blue);
+    color: white; border-radius: 50%; display: flex;
+    align-items: center; justify-content: center; font-size: 1.5rem;
+}
+
+.user-info h1 { font-size: 1.25rem; }
+.user-info p { font-size: 0.85rem; color: var(--text-muted); }
+
+.logout-minimal { border: none; background: none; color: var(--text-muted); font-size: 1.2rem; cursor: pointer; }
+
+/* Card de Resumo */
+.summary-card {
+    background: var(--primary-blue); color: white;
+    padding: 1.5rem; border-radius: 20px; box-shadow: 0 10px 20px rgba(37, 99, 235, 0.2);
+    margin-bottom: 2rem;
+}
+
+.summary-card .label { font-size: 0.9rem; opacity: 0.9; }
+.summary-card h2 { font-size: 2.5rem; margin: 0.5rem 0; }
+
+.progress-bar { height: 8px; background: rgba(255,255,255,0.2); border-radius: 4px; margin: 10px 0; }
+.progress-fill { height: 100%; background: white; border-radius: 4px; }
+.sub-label { font-size: 0.75rem; opacity: 0.8; }
+
+/* Lista de Presenças */
+.section-title {
+    display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;
+}
+
+.badge-count { background: #e2e8f0; padding: 4px 12px; border-radius: 20px; font-size: 0.75rem; font-weight: 600; }
+
+.presence-item {
+    background: var(--white); padding: 1rem; border-radius: 15px;
+    display: flex; align-items: center; gap: 1rem; margin-bottom: 1rem;
+    border: 1px solid var(--border); transition: 0.2s;
+}
+
+.presence-item:hover { transform: scale(1.02); }
+
+.date-icon {
+    width: 45px; height: 45px; background: #eff6ff; color: var(--primary-blue);
+    border-radius: 12px; display: flex; flex-direction: column;
+    align-items: center; justify-content: center; font-weight: bold; font-size: 0.7rem;
+}
+
+.item-info { flex: 1; }
+.item-info h4 { font-size: 0.95rem; margin-bottom: 2px; }
+.item-info p { font-size: 0.8rem; color: var(--text-muted); }
+
+.status-badge {
+    font-size: 0.7rem; font-weight: bold; color: var(--success);
+    background: #dcfce7; padding: 4px 8px; border-radius: 6px;
+}
+
+/* Botão Flutuante (Mobile First) */
+.fab-register {
+    position: fixed; bottom: 20px; left: 50%; transform: translateX(-50%);
+    background: var(--primary-blue); color: white; border: none;
+    padding: 1rem 2rem; border-radius: 50px; font-weight: bold;
+    display: flex; align-items: center; gap: 10px; box-shadow: 0 10px 25px rgba(37, 99, 235, 0.3);
+    cursor: pointer; width: 90%; max-width: 400px; justify-content: center;
+}

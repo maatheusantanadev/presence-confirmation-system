@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Confirmar Presença | Sistema Acadêmico</title>
+    <link rel="stylesheet" href="assets/css/Aluno_confirma_presenca.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <main class="container">
+        <div class="presence-card animate-in" id="confirmCard">
+            <div class="card-header">
+                <div class="icon-circle">
+                    <i class="fas fa-qrcode"></i>
+                </div>
+                <h1>Confirmar Presença</h1>
+                <p>Insira o código da aula ou use o leitor de QR Code.</p>
+            </div>
+
+            <form id="presenceForm" novalidate>
+                <div class="form-group">
+                    <label for="presenceCode">Código da Aula</label>
+                    <div class="input-code-wrapper">
+                        <input 
+                            type="text" 
+                            id="presenceCode" 
+                            placeholder="Ex: A1B2C3" 
+                            maxlength="10"
+                            autocomplete="off"
+                            required
+                        >
+                        <i class="fas fa-keyboard keyboard-icon"></i>
+                    </div>
+                    <span class="error-message" id="error-code">O código é obrigatório.</span>
+                </div>
+
+                <div class="card-actions">
+                    <button type="submit" class="btn-primary" id="confirmBtn">
+                        Confirmar Presença
+                    </button>
+                    
+                    <div class="divider">
+                        <span>ou</span>
+                    </div>
+
+                    <button type="button" class="btn-secondary" id="openScannerBtn">
+                        <i class="fas fa-camera"></i> Ler QR Code
+                    </button>
+                </div>
+            </form>
+        </div>
+
+        <div class="scanner-overlay animate-in" id="scannerSection" style="display: none;">
+            <div class="scanner-container">
+                <div class="scanner-header">
+                    <h2>Escaneie o QR Code</h2>
+                    <button class="btn-close-scanner" id="closeScannerBtn">&times;</button>
+                </div>
+                <div class="camera-view">
+                    <div id="reader"></div> 
+                    <div class="scanner-guide"></div>
+                </div>
+                <p class="scanner-status">Aponte a câmera para o QR Code do professor.</p>
+            </div>
+        </div>
+
+        <div id="feedbackContainer" class="feedback-toast" style="display: none;">
+            <div class="toast-content success" id="successToast">
+                <i class="fas fa-check-circle toast-icon"></i>
+                <div class="toast-text">
+                    <h4>Presença Confirmada!</h4>
+                    <p>Obrigado, Matheus. Sua presença foi registrada.</p>
+                </div>
+            </div>
+            <div class="toast-content error" id="errorToast">
+                <i class="fas fa-times-circle toast-icon"></i>
+                <div class="toast-text">
+                    <h4>Código Inválido</h4>
+                    <p>Verifique o código ou tente novamente.</p>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <script src="assets/js/Aluno_confirma_presenca.js"></script>
+    </body>
+</html>
