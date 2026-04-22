@@ -1,17 +1,29 @@
 document.getElementById('registerForm').addEventListener('submit', async (e) => {
     e.preventDefault();
 
+    const fullName = document.getElementById('full_name');
+    const cpf = document.getElementById('cpf');
     const username = document.getElementById('username');
     const password = document.getElementById('password');
-    const role = document.getElementById('role');
     const apiResponse = document.getElementById('apiResponse');
 
-    // Reset de estilos
-    [username, password, role].forEach(el => el.classList.remove('invalid'));
+    // Reset visual
+    [fullName, cpf, username, password].forEach(el => el.classList.remove('invalid'));
     apiResponse.style.display = 'none';
 
-    // 1. Validações Locais (Espelhando o Backend)
     let hasError = false;
+
+    // Validação CPF (apenas números)
+    const cpfClean = cpf.value.replace(/\D/g, '');
+    if (cpfClean.length !== 11) {
+        cpf.classList.add('invalid');
+        hasError = true;
+    }
+
+    if (fullName.value.trim().length < 3) {
+        fullName.classList.add('invalid');
+        hasError = true;
+    }
 
     if (username.value.trim().length < 3) {
         username.classList.add('invalid');
@@ -21,7 +33,6 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
     const passVal = password.value;
     const hasUpper = /[A-Z]/.test(passVal);
     const hasNum = /\d/.test(passVal);
-    
     if (passVal.length < 6 || !hasUpper || !hasNum) {
         password.classList.add('invalid');
         hasError = true;
@@ -29,19 +40,18 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
 
     if (hasError) return;
 
-    // 2. Preparação dos dados
+    // Preparação dos dados para o seu Schema Pydantic
     const userData = {
+        full_name: fullName.value,
+        cpf: cpfClean, // Envia apenas números para o backend
         username: username.value,
-        password: password.value,
-        role: role.value || "admin"
+        password: password.value
     };
 
     try {
         const response = await fetch('http://localhost:8000/register', {
             method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
+            headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify(userData)
         });
 
@@ -49,13 +59,18 @@ document.getElementById('registerForm').addEventListener('submit', async (e) => 
 
         if (response.ok) {
             apiResponse.className = "message success";
-            apiResponse.textContent = "Usuário criado com sucesso!";
+            apiResponse.textContent = "Professor registrado! Redirecionando...";
             apiResponse.style.display = 'block';
-            document.getElementById('registerForm').reset();
+
+            // Salva o CPF no localStorage para uso futuro nas turmas
+            localStorage.setItem('user_cpf', cpfClean);
+
+            setTimeout(() => {
+                window.location.href = 'login.html';
+            }, 2000);
         } else {
-            // Trata erros vindos do FastAPI (400, 422, etc)
             apiResponse.className = "message error";
-            apiResponse.textContent = result.detail || "Erro ao cadastrar usuário.";
+            apiResponse.textContent = result.detail || "Erro ao cadastrar professor.";
             apiResponse.style.display = 'block';
         }
 

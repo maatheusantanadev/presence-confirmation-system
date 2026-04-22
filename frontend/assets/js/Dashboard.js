@@ -8,6 +8,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Carregar dados reais do backend Python
     loadStats();
+    generateAttendanceQRCode();
 
     // Botão Sair
     document.getElementById('logoutBtn').addEventListener('click', (e) => {
@@ -19,23 +20,34 @@ document.addEventListener('DOMContentLoaded', () => {
 
 async function loadStats() {
     try {
-        // Exemplo de chamada para o seu backend FastAPI/Flask
-        // const response = await fetch('http://localhost:8000/stats', {
-        //     headers: { 'Authorization': `Bearer ${localStorage.getItem('access_token')}` }
-        // });
-        // const data = await response.json();
+        const token = localStorage.getItem('access_token');
 
-        // Mock para visualização inicial
-        const mockData = {
-            totalAlunos: 128,
-            totalPresencas: 2540
-        };
+        // Chamada real para o backend
+        const response = await fetch('http://localhost:8000/stats', {
+            method: 'GET',
+            headers: {
+                'Authorization': `Bearer ${token}`,
+                'Content-Type': 'application/json'
+            }
+        });
 
-        animateValue("totalAlunos", 0, mockData.totalAlunos, 1000);
-        animateValue("totalPresencas", 0, mockData.totalPresencas, 1000);
+        if (!response.ok) {
+            if(response.status === 401) window.location.href = 'login.html';
+            throw new Error("Falha ao carregar estatísticas");
+        }
+
+        const data = await response.json();
+
+        // Mapeando os dados do banco para os IDs do seu HTML
+        // Supondo que no HTML os IDs sejam 'totalTurmas' e 'totalPresencas'
+        animateValue("totalAlunos", 0, data.total_groups, 1000); // Aqui vira o total de turmas
+        animateValue("totalPresencas", 0, data.total_presences, 1000);
 
     } catch (error) {
         console.error('Erro ao buscar estatísticas:', error);
+        // Fallback em caso de erro para não deixar o card vazio
+        document.getElementById('totalAlunos').innerText = "0";
+        document.getElementById('totalPresencas').innerText = "0";
     }
 }
 
@@ -53,3 +65,23 @@ function animateValue(id, start, end, duration) {
     };
     window.requestAnimationFrame(step);
 }
+
+// Adicione isso dentro do seu DOMContentLoaded ou como uma função separada
+function generateAttendanceQRCode() {
+    const qrContainer = document.getElementById("qrcode");
+    qrContainer.innerHTML = ""; // Limpa antes de gerar
+
+    // Defina a URL da sua tela de registro (ex: registrar_presenca.html)
+    // Se estiver em rede local, use o IP do seu Mac, ex: http://192.168.1.5:5500/presenca_aluno.html
+    const registrationUrl = `${window.location.origin}/presenca_aluno.html`;
+
+    new QRCode(qrContainer, {
+        text: registrationUrl,
+        width: 200,
+        height: 200,
+        colorDark: "#2563eb", // Azul do seu sistema
+        colorLight: "#ffffff",
+        correctLevel: QRCode.CorrectLevel.H
+    });
+}
+

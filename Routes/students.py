@@ -1,8 +1,9 @@
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 from Database.database import get_db
+from Models.students import Student
 from Schemas.students import StudentCreate
-from Services.student_service import create_student
+from Services.studentes_service import create_student
 from auth import get_admin_user
 
 router = APIRouter()
@@ -20,7 +21,13 @@ def create(
         admin: dict = Depends(get_admin_user)
 ):
     try:
-        return create_student(student.name, student.email, db)
+        return create_student(
+            name=student.name,
+            email=student.email,
+            registration_number=student.registration_number,  # Argumento que faltava!
+            db=db,
+            group_id=student.group_id  # Passe o group_id se ele existir no seu Schema
+        )
 
     except ValueError as e:
         raise HTTPException(status_code=400, detail=str(e))

@@ -1,0 +1,238 @@
+/* Importando variáveis do Dashboard */
+
+/* Garante que o fundo ocupe a tela toda e não gere scroll desnecessário */
+body, html {
+    height: 100%;
+    margin: 0;
+    overflow: hidden; /* Evita scroll na página principal, mantendo apenas dentro do card se necessário */
+}
+
+.container {
+    display: flex;
+    justify-content: center; /* Centraliza horizontalmente */
+    align-items: center;     /* Centraliza verticalmente */
+    width: 100vw;            /* Largura total da viewport */
+    height: 100vh;           /* Altura total da viewport */
+    background-color: var(--bg-color);
+    padding: 20px;
+}
+
+.form-card {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1);
+    width: 100%;
+    max-width: 550px;
+    border: 1px solid var(--border);
+    /* Garante que o card não "escape" em telas pequenas */
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+:root {
+    --bg-color: #f0f4f8;
+    --primary-blue: #2563eb;
+    --primary-dark: #1e3a8a;
+    --white: #ffffff;
+    --text-main: #1e293b;
+    --text-muted: #64748b;
+    --border: #e2e8f0;
+    --success: #16a34a;
+}
+
+/* Container Principal */
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    background-color: var(--bg-color);
+    padding: 2rem;
+}
+
+/* Card do Formulário */
+.form-card {
+    background: var(--white);
+    padding: 2.5rem;
+    border-radius: 16px;
+    box-shadow: 0 10px 25px rgba(30, 58, 138, 0.1);
+    width: 100%;
+    max-width: 550px;
+    border: 1px solid var(--border);
+}
+
+/* Header do Formulário */
+.form-header {
+    margin-bottom: 2rem;
+    position: relative;
+}
+
+.btn-back {
+    background: transparent;
+    border: none;
+    color: var(--primary-blue);
+    font-size: 1.2rem;
+    cursor: pointer;
+    margin-bottom: 1rem;
+    transition: 0.2s;
+}
+
+.btn-back:hover { transform: translateX(-5px); }
+
+.form-header h1 {
+    font-size: 1.8rem;
+    color: var(--primary-dark);
+    margin-bottom: 0.5rem;
+}
+
+.form-header p {
+    color: var(--text-muted);
+    font-size: 0.95rem;
+}
+
+/* Campos de Input */
+.form-group {
+    margin-bottom: 1.5rem;
+}
+
+.form-group label {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 0.5rem;
+    color: var(--text-main);
+}
+
+input[type="text"] {
+    width: 100%;
+    padding: 0.8rem 1rem;
+    border: 1.5px solid var(--border);
+    border-radius: 10px;
+    font-size: 1rem;
+    transition: 0.3s;
+}
+
+input[type="text"]:focus {
+    outline: none;
+    border-color: var(--primary-blue);
+    box-shadow: 0 0 0 4px rgba(37, 99, 235, 0.1);
+}
+
+/* Caixa de Busca de Alunos */
+.search-box {
+    position: relative;
+    margin-bottom: 1rem;
+}
+
+.search-box i {
+    position: absolute;
+    left: 1rem;
+    top: 50%;
+    transform: translateY(-50%);
+    color: var(--text-muted);
+}
+
+.search-box input {
+    padding-left: 2.8rem;
+}
+
+/* Lista de Alunos */
+.students-selection-container {
+    background: #f8fafc;
+    padding: 1rem;
+    border-radius: 12px;
+    border: 1.5px solid var(--border);
+}
+
+.selected-count {
+    font-size: 0.85rem;
+    color: var(--primary-blue);
+    font-weight: 700;
+    margin-bottom: 0.8rem;
+    display: block;
+}
+
+.students-list-wrapper {
+    max-height: 250px;
+    overflow-y: auto;
+    padding-right: 5px;
+}
+
+/* Custom Scrollbar */
+.students-list-wrapper::-webkit-scrollbar { width: 6px; }
+.students-list-wrapper::-webkit-scrollbar-thumb { background: var(--border); border-radius: 10px; }
+
+.student-item {
+    background: var(--white);
+    margin-bottom: 0.5rem;
+    padding: 0.8rem;
+    border-radius: 8px;
+    border: 1px solid var(--border);
+    transition: 0.2s;
+}
+
+.student-item:hover {
+    border-color: var(--primary-blue);
+    background-color: #f0f7ff;
+}
+
+.student-item label {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    cursor: pointer;
+    margin-bottom: 0;
+}
+
+.student-item input[type="checkbox"] {
+    width: 18px;
+    height: 18px;
+    accent-color: var(--primary-blue);
+}
+
+.student-details .name {
+    display: block;
+    font-weight: 600;
+    color: var(--text-main);
+}
+
+.student-details .registration {
+    font-size: 0.8rem;
+    color: var(--text-muted);
+}
+
+/* Botões de Ação */
+.form-actions {
+    display: flex;
+    gap: 1rem;
+    margin-top: 2rem;
+}
+
+.btn-primary, .btn-secondary {
+    flex: 1;
+    padding: 1rem;
+    border-radius: 10px;
+    border: none;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.btn-primary {
+    background-color: var(--primary-blue);
+    color: white;
+}
+
+.btn-primary:hover { background-color: #1d4ed8; transform: translateY(-2px); }
+
+.btn-secondary {
+    background-color: var(--white);
+    color: var(--text-muted);
+    border: 1.5px solid var(--border);
+}
+
+.btn-secondary:hover { background-color: #f1f5f9; color: var(--text-main); }

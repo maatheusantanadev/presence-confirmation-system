@@ -161,10 +161,10 @@ body {
 .action-btn:hover { transform: translateY(-3px); background: #1d4ed8; }
 
 .action-btn.secondary { background: #1e3a8a; }
-.action-btn.outline { 
-    background: transparent; 
-    border: 1px solid var(--primary-blue); 
-    color: var(--primary-blue); 
+.action-btn.outline {
+    background: transparent;
+    border: 1px solid var(--primary-blue);
+    color: var(--primary-blue);
 }
 .action-btn.outline:hover { background: #eff6ff; }
 
@@ -174,4 +174,52 @@ body {
     .sidebar h2, .sidebar a span, .sidebar-nav a { font-size: 0; padding: 1.5rem; justify-content: center; }
     .sidebar-nav i { font-size: 1.2rem; }
     .main-content { margin-left: 70px; width: calc(100% - 70px); }
+}
+/* Container que agrupa o título, o código e o botão */
+.qr-container {
+    background: white;
+    margin: 2rem auto; /* Centraliza horizontalmente em relação à página */
+    padding: 2.5rem;
+    border-radius: 20px;
+    border: 1px solid #e2e8f0;
+    text-align: center;
+    max-width: 450px; /* Largura máxima para não ficar esticado */
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centraliza os itens internos horizontalmente */
+    justify-content: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+}
+
+/* A caixa cinza onde o QR Code aparece */
+.qr-code-box {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+    background: #f8fafc;
+    border-radius: 16px;
+    margin: 1.5rem 0;
+    width: 220px; /* Largura fixa para garantir o quadrado perfeito */
+    height: 220px; /* Altura fixa */
+}
+
+/* Ajuste para garantir que a imagem gerada pela biblioteca também centralize */
+#qrcode img, #qrcode canvas {
+    margin: 0 auto;
+    border: 8px solid white;
+    border-radius: 8px;
+}
+
+.qr-header h2 {
+    font-size: 1.4rem;
+    color: #1e293b;
+    margin-bottom: 0.5rem;
+}
+
+.qr-header p {
+    font-size: 0.9rem;
+    color: #64748b;
+    max-width: 250px;
+    margin: 0 auto;
 }

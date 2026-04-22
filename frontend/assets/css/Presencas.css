@@ -1,0 +1,89 @@
+:root {
+    --primary: #2563eb;
+    --success: #16a34a;
+    --bg-light: #f8fafc;
+    --border: #e2e8f0;
+}
+
+.presence-grid {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 2rem;
+    margin-top: 2rem;
+}
+
+.group-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+    border: 1px solid var(--border);
+    overflow: hidden;
+    animation: slideUp 0.4s ease forwards;
+}
+
+.group-header {
+    background: #f1f5f9;
+    padding: 1.2rem 1.5rem;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.group-header h3 {
+    color: var(--primary);
+    margin: 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.presence-table {
+    width: 100%;
+    border-collapse: collapse;
+}
+
+.presence-table th {
+    text-align: left;
+    padding: 1rem 1.5rem;
+    font-size: 0.8rem;
+    text-transform: uppercase;
+    color: #64748b;
+    background: #fafafa;
+}
+
+.presence-table td {
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid #f1f5f9;
+    font-size: 0.95rem;
+}
+
+.status-badge {
+    background: #dcfce7;
+    color: var(--success);
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+}
+
+.btn-refresh {
+    background: var(--primary);
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 8px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: 0.3s;
+}
+
+.btn-refresh:hover { background: #1d4ed8; }
+
+@keyframes slideUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}

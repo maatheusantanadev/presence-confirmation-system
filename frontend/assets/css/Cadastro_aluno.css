@@ -166,3 +166,24 @@ body {
     font-weight: 500;
     border: 1px solid #bbf7d0;
 }
+
+/* Mantenha o seu CSS e adicione/ajuste estas linhas */
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100vw;
+    height: 100vh;
+    background-color: var(--bg-color);
+}
+
+.form-card {
+    /* ... seu código anterior ... */
+    animation: fadeInSlide 0.4s ease forwards;
+}
+
+/* Garante que o input invalid mostre a mensagem de erro que vem logo depois */
+.form-group input.invalid + .error-message {
+    display: block;
+}

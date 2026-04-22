@@ -13,4 +13,9 @@ uvicorn main:app --reload
     
 
 python -m unittest <caminho do arquivo>
+
+
+docker compose down -v # Se já existir o container
+docker compose up --build
+
     

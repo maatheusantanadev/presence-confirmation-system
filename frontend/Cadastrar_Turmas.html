@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Nova Turma | Sistema Presença</title>
+    <link rel="stylesheet" href="assets/css/Dashboard.css">
+    <link rel="stylesheet" href="./assets/css/Cadastrar_Turmas.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+</head>
+<body>
+
+    <main class="container">
+        <div class="form-card">
+            <header class="form-header">
+                <div style="display: flex; align-items: center; gap: 15px;">
+                    <button class="btn-back" onclick="location.href='turmas.html'">
+                        <i class="fas fa-arrow-left"></i>
+                    </button>
+                    <h1 style="margin: 0;">Criar Nova Turma</h1>
+                </div>
+                <p style="margin-top: 10px;">Preencha os dados e selecione os alunos...</p>
+            </header>
+
+            <form id="groupForm">
+                <div class="form-group">
+                    <label for="groupName">Nome da Turma</label>
+                    <input type="text" id="groupName" placeholder="Ex: Engenharia de Software 3º A" required>
+                </div>
+
+                <div class="form-group">
+                    <label>Selecionar Alunos</label>
+                    <div class="search-box">
+                        <i class="fas fa-search"></i>
+                        <input type="text" id="studentSearch" placeholder="Pesquisar aluno por nome ou matrícula...">
+                    </div>
+
+                    <div class="students-selection-container">
+                        <div id="selectedCount" class="selected-count">0 alunos selecionados</div>
+                        <div class="students-list-wrapper" id="studentsList">
+                            <p class="loading-text">Carregando alunos...</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" onclick="location.href='turmas.html'">Cancelar</button>
+                    <button type="submit" id="submitBtn" class="btn-primary">
+                        <i class="fas fa-save"></i> Criar Turma
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+
+    <script src="assets/js/Cadastrar_Turmas.js"></script>
+</body>
+</html>

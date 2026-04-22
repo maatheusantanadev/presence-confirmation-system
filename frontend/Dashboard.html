@@ -1,4 +1,4 @@
-x<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="pt-BR">
 <head>
     <meta charset="UTF-8">
@@ -6,12 +6,13 @@ x<!DOCTYPE html>
     <title>Dashboard | Controle de Presença</title>
     <link rel="stylesheet" href="assets/css/Dashboard.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
 </head>
 <body>
 
     <aside class="sidebar">
         <div class="sidebar-header">
-            <h2>Sistema Presença</h2>
+            <h2>EduPass</h2>
         </div>
         <nav class="sidebar-nav">
             <a href="#" class="active"><i class="fas fa-chart-line"></i> Dashboard</a>
@@ -36,11 +37,11 @@ x<!DOCTYPE html>
         <section class="stats-grid">
             <div class="stat-card">
                 <div class="stat-icon blue">
-                    <i class="fas fa-user-graduate"></i>
+                    <i class="fas fa-school"></i>
                 </div>
                 <div class="stat-info">
-                    <p>Total de Alunos</p>
-                    <h2 id="totalAlunos">0</h2>
+                   <h3>Total de Turmas</h3>
+                    <p id="totalAlunos">0</p>
                 </div>
             </div>
 
@@ -49,27 +50,35 @@ x<!DOCTYPE html>
                     <i class="fas fa-check-circle"></i>
                 </div>
                 <div class="stat-info">
-                    <p>Presenças Registradas</p>
-                    <h2 id="totalPresencas">0</h2>
+                   <h3>Presenças Confirmadas</h3>
+                    <p id="totalPresencas">0</p>
                 </div>
             </div>
         </section>
 
         <section class="actions-section">
-            <h3>Ações Rápidas</h3>
+            <h3>Gerenciamento</h3>
             <div class="actions-grid">
                 <button class="action-btn" onclick="location.href='alunos.html'">
                     <i class="fas fa-user-plus"></i>
                     Gerenciar Alunos
                 </button>
-                <button class="action-btn secondary" onclick="location.href='registrar_sessao.html'">
-                    <i class="fas fa-qrcode"></i>
-                    Registrar Presença
+                <button class="action-btn secondary" onclick="location.href='turmas.html'">
+                    <i class="fas fa-plus-circle"></i>
+                    Gerenciar Turmas
                 </button>
-                <button class="action-btn outline" onclick="location.href='historico.html'">
+                <button class="action-btn outline" onclick="location.href='presencas.html'">
                     <i class="fas fa-eye"></i>
                     Visualizar Presenças
                 </button>
+            </div>
+
+            <div class="qr-container animate-in">
+                <div class="qr-header">
+                    <h2><i class="fas fa-qrcode"></i> Registrar Presença</h2>
+                    <p>Peça aos alunos para lerem o código abaixo com o celular</p>
+                </div>
+                <div id="qrcode" class="qr-code-box"></div>
             </div>
         </section>
     </main>

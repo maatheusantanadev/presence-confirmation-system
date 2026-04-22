@@ -4,43 +4,39 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Cadastrar Aluno | Sistema Presença</title>
-    <link rel="stylesheet" href="assets/css/Dashboard.css">
-    <link rel="stylesheet" href="assets/css/Cadastro_aluno.css">
+    <link rel="stylesheet" href="./assets/css/Dashboard.css">
+    <link rel="stylesheet" href="./assets/css/Cadastro_aluno.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
 
-    <main class="container">
+    <main class="container animate-in">
         <div class="form-card">
             <div class="form-header">
                 <div class="icon-circle">
                     <i class="fas fa-user-plus"></i>
                 </div>
                 <h1>Cadastrar Aluno</h1>
-                <p>Preencha os dados abaixo para registrar um novo estudante.</p>
+                <p>O número de matrícula será usado para vincular o aluno às turmas.</p>
             </div>
 
             <form id="studentForm" novalidate>
                 <div class="form-group">
                     <label for="nome">Nome Completo</label>
-                    <input 
-                        type="text" 
-                        id="nome" 
-                        placeholder="Ex: Ana Silva" 
-                        required
-                    >
-                    <span class="error-message" id="error-nome">O nome é obrigatório.</span>
+                    <input type="text" id="nome" placeholder="Ex: Matheus Santos" required>
+                    <span class="error-message">O nome deve ter pelo menos 3 caracteres.</span>
+                </div>
+
+                <div class="form-group">
+                    <label for="registration">Número de Matrícula</label>
+                    <input type="text" id="registration" placeholder="Ex: MAT2026001" required>
+                    <span class="error-message">A matrícula é obrigatória para criar turmas.</span>
                 </div>
 
                 <div class="form-group">
                     <label for="email">E-mail Acadêmico</label>
-                    <input 
-                        type="email" 
-                        id="email" 
-                        placeholder="exemplo@universidade.com" 
-                        required
-                    >
-                    <span class="error-message" id="error-email">Insira um e-mail válido.</span>
+                    <input type="email" id="email" placeholder="exemplo@universidade.com" required>
+                    <span class="error-message">Insira um e-mail válido.</span>
                 </div>
 
                 <div class="form-actions">
@@ -48,7 +44,7 @@
                         Cancelar
                     </button>
                     <button type="submit" class="btn-primary">
-                        <i class="fas fa-save"></i> Salvar
+                        <i class="fas fa-save"></i> Salvar Aluno
                     </button>
                 </div>
             </form>
