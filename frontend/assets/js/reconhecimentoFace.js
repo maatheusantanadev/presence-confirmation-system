@@ -91,8 +91,11 @@ btnVerificarRosto.addEventListener("click", () => {
 
 async function confirmarPresencaAPI(blob) {
     try {
+        const urlParams = new URLSearchParams(window.location.search);
         const formData = new FormData();
+        const groupId = urlParams.get('group_id');
         formData.append('image', blob, 'face.jpg');
+        formData.append('group_id', groupId);
 
         const token = localStorage.getItem('access_token');
 
@@ -108,7 +111,7 @@ async function confirmarPresencaAPI(blob) {
         if (response.ok) {
             mostrarAlerta(`✅ ${data.msg}`, "sucesso");
             pararCamera();
-            setTimeout(() => { window.location.href = "dashboard.html"; }, 2500);
+            //setTimeout(() => { window.location.href = "Dashboard.html"; }, 2500);
         } else {
             throw new Error(data.detail || data.msg || "Erro no reconhecimento.");
         }

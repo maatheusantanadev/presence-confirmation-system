@@ -1,63 +1,66 @@
 document.addEventListener('DOMContentLoaded', async () => {
+    // Declaramos o token logo no início do escopo
+    const token = localStorage.getItem('access_token');
+
+    // Se o token não existir, nem tenta rodar o resto
+    if (!token) {
+        console.error("Token não encontrado!");
+        window.location.href = 'login.html';
+        return;
+    }
+
     const studentInput = document.getElementById('studentSearch');
+    const groupSelect = document.getElementById('groupSelect');
     const autocompleteList = document.getElementById('autocompleteList');
     const presenceForm = document.getElementById('presenceForm');
 
-    // Variável para armazenar os alunos vindos do Python
     let alunos = [];
 
-    // 1. Atualização Relógio (Mantido)
-    function updateDateTime() {
-        const now = new Date();
-        const dateStr = now.toLocaleDateString('pt-BR');
-        const timeStr = now.toLocaleTimeString('pt-BR');
-        document.getElementById('currentDateTime').innerHTML = `
-            <span class="date"><i class="far fa-calendar-alt"></i> ${dateStr}</span>
-            <span class="time"><i class="far fa-clock"></i> ${timeStr}</span>
-        `;
+    // 1. Carregar Turmas
+    async function carregarTurmas() {
+        try {
+            const response = await fetch('http://localhost:8000/groups', {
+                headers: { 'Authorization': `Bearer ${token}` } // Aqui ele usa o token local
+            });
+            if (response.ok) {
+                const turmas = await response.json();
+                turmas.forEach(turma => {
+                    const option = document.createElement('option');
+                    option.value = turma.id;
+                    option.textContent = turma.name;
+                    groupSelect.appendChild(option);
+                });
+            }
+        } catch (error) { console.error("Erro ao carregar turmas:", error); }
     }
-    setInterval(updateDateTime, 1000);
-    updateDateTime();
 
-    // 2. Busca Real de Alunos do Backend
+    // 2. Carregar Alunos
     async function carregarAlunos() {
-        const token = localStorage.getItem('access_token');
         try {
             const response = await fetch('http://localhost:8000/students', {
-                method: 'GET',
-                headers: {
-                    'Authorization': `Bearer ${token}`
-                }
+                headers: { 'Authorization': `Bearer ${token}` }
             });
-
             if (response.ok) {
                 const data = await response.json();
-                // Mapeia apenas o nome (ou 'name' conforme seu banco) para o array
-                alunos = data.map(aluno => aluno.name || aluno.nome);
-            } else {
-                console.error("Erro ao carregar alunos do banco.");
+                alunos = data.map(aluno => aluno.name);
             }
-        } catch (error) {
-            console.error("Erro de conexão:", error);
-        }
+        } catch (error) { console.error("Erro de conexão:", error); }
     }
 
-    // Inicializa a busca
+    // Inicialização
+    await carregarTurmas();
     await carregarAlunos();
 
-    // 3. Autocomplete (Ajustado para usar a variável 'alunos' vinda do banco)
+    // ... Lógica de Autocomplete (Mantida) ...
     studentInput.addEventListener('input', function() {
         const val = this.value;
         autocompleteList.innerHTML = '';
         if (!val) return false;
-
         const filtered = alunos.filter(a => a.toLowerCase().includes(val.toLowerCase()));
-
         filtered.forEach(aluno => {
             const div = document.createElement('div');
-            div.className = 'autocomplete-item'; // Boa prática para CSS
+            div.className = 'autocomplete-item';
             div.innerHTML = `<strong>${aluno.substr(0, val.length)}</strong>${aluno.substr(val.length)}`;
-
             div.addEventListener('click', function() {
                 studentInput.value = aluno;
                 autocompleteList.innerHTML = '';
@@ -66,34 +69,27 @@ document.addEventListener('DOMContentLoaded', async () => {
         });
     });
 
-    // 4. Submissão e Redirecionamento
+    // 4. Submissão
     presenceForm.addEventListener('submit', (e) => {
         e.preventDefault();
+        const groupId = groupSelect.value;
+        const studentName = studentInput.value;
 
-        if (!studentInput.value) {
-            alert('Por favor, selecione um aluno.');
+        if (!groupId || !studentName) {
+            alert('Selecione a turma e o aluno.');
             return;
         }
 
-        // Verifica se o nome digitado realmente existe na lista carregada
-        if (!alunos.includes(studentInput.value)) {
-            alert('Aluno não encontrado. Selecione um nome da lista.');
+        if (!alunos.includes(studentName)) {
+            alert('Aluno não encontrado na lista.');
             return;
         }
 
-        // Feedback visual antes de mudar de página
         document.getElementById('feedbackContainer').style.display = 'flex';
 
-        // Redireciona para o Reconhecimento Facial após 1.5 segundos
         setTimeout(() => {
-            // Passamos o nome do aluno via URL para a próxima tela saber quem é
-            const nomeCodificado = encodeURIComponent(studentInput.value);
-            window.location.href = `reconhecimentoFace.html?aluno=${nomeCodificado}`;
+            const nomeCodificado = encodeURIComponent(studentName);
+            window.location.href = `reconhecimentoFace.html?aluno=${nomeCodificado}&group_id=${groupId}`;
         }, 1500);
     });
 });
-
-function resetForm() {
-    document.getElementById('presenceForm').reset();
-    document.getElementById('feedbackContainer').style.display = 'none';
-}

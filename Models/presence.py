@@ -5,10 +5,11 @@ from datetime import datetime
 
 class Presence(Base):
     __tablename__ = "presences"
-
     id = Column(Integer, primary_key=True, index=True)
     student_id = Column(Integer, ForeignKey("students.id"))
-    date = Column(DateTime, default=datetime.utcnow)
+    group_id = Column(Integer, ForeignKey("groups.id"))
+    date = Column(DateTime, default=datetime.now)
     status = Column(String, default="presente")
 
     student = relationship("Student", back_populates="attendances")
+    group = relationship("Group")
