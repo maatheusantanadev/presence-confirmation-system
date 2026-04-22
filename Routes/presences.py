@@ -67,6 +67,7 @@ def get_presence_history(
 
         result[group_name].append({
             "aluno": p.student.name,
+            "email": p.student.email,
             "data": p.date.strftime("%d/%m/%Y %H:%M"),
             "status": p.status
         })

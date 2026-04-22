@@ -115,3 +115,29 @@
     .filter-grid { grid-template-columns: 1fr 1fr; }
     .btn-align { grid-column: span 2; }
 }
+
+/* Adicione ao final do seu arquivo CSS */
+
+.custom-table tbody tr td[colspan="5"] {
+    padding: 0.8rem 1.5rem;
+    color: var(--primary-blue);
+    font-size: 0.9rem;
+    border-left: 4px solid var(--primary-blue);
+}
+
+.status-badge {
+    display: inline-block;
+    padding: 4px 10px;
+    border-radius: 20px;
+    font-size: 0.75rem;
+    font-weight: 700;
+    background: #dcfce7;
+    color: #16a34a;
+    text-transform: uppercase;
+}
+
+/* Spinner no header-title caso queira */
+.header-title p {
+    font-size: 0.95rem;
+    color: var(--text-muted);
+}
