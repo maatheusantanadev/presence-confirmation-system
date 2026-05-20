@@ -62,9 +62,27 @@ body {
     color: white;
 }
 
+/* Rodapé da Sidebar & Botão Sair Corrigido */
 .sidebar-footer {
-    padding: 1rem;
+    padding: 0.5rem; /* Ajustado para abraçar melhor o link interno */
     border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.sidebar-footer a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 1rem 1.5rem;
+    color: rgba(255, 255, 255, 0.7);
+    text-decoration: none;
+    border-radius: 8px;
+    transition: 0.3s;
+}
+
+/* Hover com feedback visual de logout (Alerta em Vermelho) */
+.sidebar-footer a:hover {
+    background-color: rgba(239, 68, 68, 0.15); /* Fundo vermelho sutil */
+    color: #f87171; /* Texto vermelho claro para contraste no azul */
 }
 
 /* Main Content */
@@ -173,8 +191,11 @@ body {
     .sidebar { width: 70px; }
     .sidebar h2, .sidebar a span, .sidebar-nav a { font-size: 0; padding: 1.5rem; justify-content: center; }
     .sidebar-nav i { font-size: 1.2rem; }
+    .sidebar-footer a { justify-content: center; padding: 1.5rem; }
+    .sidebar-footer a span, .sidebar-footer text { display: none; } /* Esconde o texto "Sair" no mobile se houver */
     .main-content { margin-left: 70px; width: calc(100% - 70px); }
 }
+
 /* Container que agrupa o título, o código e o botão */
 .qr-container {
     background: white;
