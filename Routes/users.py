@@ -18,6 +18,7 @@ router = APIRouter(tags=["Users"])
 @router.get("/users")
 def list_users(
     db: Session = Depends(get_db),
+    admin: dict = Depends(get_admin_user)
 ):
     users = db.query(User).all()
 
