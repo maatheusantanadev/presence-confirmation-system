@@ -36,8 +36,6 @@ RUN --mount=type=cache,target=/root/.cache/pip \
 
 COPY . .
 
-# cria pasta do banco
-RUN mkdir -p /app/data
 
 # permissões
 RUN chown -R appuser:appuser /app

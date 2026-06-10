@@ -25,6 +25,6 @@ def get_current_user(token: str = Depends(oauth2_scheme)):
 
 
 def get_admin_user(current_user: dict = Depends(get_current_user)):
-    if current_user.get("role") != "admin":
+    if current_user.get("role") != "teacher":
         raise HTTPException(status_code=403, detail="Acesso negado")
     return current_user
