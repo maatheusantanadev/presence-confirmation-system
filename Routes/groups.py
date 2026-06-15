@@ -5,6 +5,7 @@ from Database.database import get_db
 from Models.groups import Group
 from Schemas.groups import GroupCreate, GroupResponse
 from Services.groups_services import create_group
+from auth import get_current_user
 
 router = APIRouter(prefix="/groups", tags=["Groups"])
 
@@ -12,12 +13,13 @@ router = APIRouter(prefix="/groups", tags=["Groups"])
 @router.post("", response_model=GroupResponse)
 def make_group(
         group: GroupCreate,
-        db: Session = Depends(get_db)
+        db: Session = Depends(get_db),
+        current_user = Depends(get_current_user)
 ):
     try:
         return create_group(
             group.name,
-            group.professor_cpf,
+            current_user.cpf,
             group.student_registration_numbers,
             db
         )

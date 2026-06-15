@@ -13,7 +13,6 @@ class StudentInGroup(BaseModel):
 
 class GroupBase(BaseModel):
     name: str
-    professor_cpf: str
 
 class GroupCreate(GroupBase):
     # Usado no POST: Recebe as matrículas para vincular os alunos
