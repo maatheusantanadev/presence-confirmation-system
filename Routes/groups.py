@@ -14,12 +14,12 @@ router = APIRouter(prefix="/groups", tags=["Groups"])
 def make_group(
         group: GroupCreate,
         db: Session = Depends(get_db),
-        current_user = Depends(get_current_user)
+        current_user: dict = Depends(get_current_user)
 ):
     try:
         return create_group(
             group.name,
-            current_user.cpf,
+            current_user["cpf"],
             group.student_registration_numbers,
             db
         )
